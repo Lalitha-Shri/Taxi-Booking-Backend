@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class TaxiServiceImplementation implements TaxiService{
@@ -17,6 +20,12 @@ public class TaxiServiceImplementation implements TaxiService{
         Taxi taxi=modelMapper.map(taxiDto, Taxi.class);
         Taxi savedTaxi=taxiRepository.save(taxi);
         return modelMapper.map(savedTaxi,TaxiDto.class);
+    }
+
+    @Override
+    public List<TaxiDto> getAllTaxi() {
+        List<Taxi> taxiList= taxiRepository.findAll();
+        return taxiList.stream().map(taxi->modelMapper.map(taxi,TaxiDto.class)).collect(Collectors.toList());
     }
 
 }

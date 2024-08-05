@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @AllArgsConstructor
@@ -19,11 +21,18 @@ public class TaxiController {
     private TaxiService taxiService;
     @Autowired
     private TaxiRepository taxiRepository;
-    //Postmapping is to add the new bus details to database
+
     @PostMapping
-    public ResponseEntity<TaxiDto> saveBus(@RequestBody TaxiDto taxiDto)
+    public ResponseEntity<TaxiDto> saveTaxi(@RequestBody TaxiDto taxiDto)
     {
         TaxiDto savedTaxi=taxiService.addTaxi(taxiDto);
         return new ResponseEntity<>(savedTaxi, HttpStatus.CREATED);
     }
+    @GetMapping
+    public ResponseEntity<List<TaxiDto>> getAllTaxis()
+    {
+        List<TaxiDto> allTaxi=taxiService.getAllTaxi();
+        return new ResponseEntity<List<TaxiDto>>(allTaxi,HttpStatus.OK);
+    }
+
 }
