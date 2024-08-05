@@ -22,17 +22,34 @@ public class TaxiController {
     @Autowired
     private TaxiRepository taxiRepository;
 
-    @PostMapping
+    @PostMapping //save taxi into repository done only by admin
     public ResponseEntity<TaxiDto> saveTaxi(@RequestBody TaxiDto taxiDto)
     {
         TaxiDto savedTaxi=taxiService.addTaxi(taxiDto);
         return new ResponseEntity<>(savedTaxi, HttpStatus.CREATED);
     }
-    @GetMapping
+    @GetMapping //get all taxis from repository in a list
     public ResponseEntity<List<TaxiDto>> getAllTaxis()
     {
         List<TaxiDto> allTaxi=taxiService.getAllTaxi();
         return new ResponseEntity<List<TaxiDto>>(allTaxi,HttpStatus.OK);
     }
-
+    @GetMapping("/{taxiId}") //get Taxi details by id
+    public ResponseEntity<TaxiDto> getTaxiById(@PathVariable("taxiId")Long taxiIds)
+    {
+        TaxiDto getTaxi=taxiService.getTaxiById(taxiIds);
+        return new ResponseEntity<TaxiDto>(getTaxi,HttpStatus.OK);
+    }
+    @DeleteMapping("/{id}")//delete taxi by Id
+    public  String deleteTaxi(@PathVariable("id")Long taxiId)
+    {
+        taxiService.deleteTaxi(taxiId);
+        return "Taxi is deleted";
+    }
+    @PutMapping("/{id}")//update taxi details by id
+    public ResponseEntity<TaxiDto> updateTaxi(@PathVariable("id") Long id, @RequestBody TaxiDto taxiDto)
+    {
+        TaxiDto updatedTaxi=taxiService.updateTaxis(taxiDto,id);
+        return new ResponseEntity<>(updatedTaxi, HttpStatus.OK);
+    }
 }
